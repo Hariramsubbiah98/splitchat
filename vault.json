@@ -1,0 +1,8 @@
+{
+  "db_type": "mysql",
+  "server": "nysqlserver.c3geeyme4acl.ap-south-1.rds.amazonaws.com",
+  "database": "chatdb",
+  "username": "admin",
+  "password": "Admin123",
+  "port": 3306
+}
