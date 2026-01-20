@@ -1,0 +1,7 @@
+pandas
+numpy
+pyodbc
+openai
+openpyxl
+chardet
+pymysql

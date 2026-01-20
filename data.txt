@@ -1,0 +1,72 @@
+-*=====================================================
+-*  REPORT NAME : Sales Orders Summary
+-*  AUTHOR      : Demo User
+-*  DESCRIPTION : Sales Order Summary by Region & Date
+-*=====================================================
+
+SET PRINTPLUS=ON
+SET EMPTYREPORT = ON
+SET PAGE = NOLEAD
+
+-*--------------------------
+-*   JOIN DECLARATIONS
+-*--------------------------
+JOIN
+   ORDER_ID IN ORDERS
+TO
+   ORDER_ID IN ORDER_DETAILS
+AS J1
+
+JOIN
+   CUSTOMER_ID IN ORDERS
+TO
+   CUSTOMER_ID IN CUSTOMERS
+AS J2
+
+-*--------------------------
+-*   DATA SOURCE
+-*--------------------------
+TABLE FILE ORDERS
+
+-*--------------------------
+-*   FILTER CONDITIONS
+-*--------------------------
+WHERE ORDER_DATE GE '2023-01-01';
+WHERE REGION EQ 'NORTH AMERICA';
+WHERE STATUS NE 'CANCELLED';
+
+-*--------------------------
+-*   OUTPUT FIELDS
+-*--------------------------
+PRINT
+  CUSTOMER_NAME
+  PRODUCT_NAME
+  REGION
+  ORDER_DATE
+
+SUM
+  QUANTITY        AS 'Order Qty'
+  ORDER_AMOUNT    AS 'Order Value'
+
+-*--------------------------
+-*   COMPUTED COLUMNS
+-*--------------------------
+COMPUTE
+  PROFIT/D12.2 = ORDER_AMOUNT - COST;
+COMPUTE
+  MARGIN/P6.2% = (PROFIT / ORDER_AMOUNT) * 100;
+
+BY REGION
+BY CUSTOMER_NAME
+
+ON TABLE SET PAGE-NUM ON
+ON TABLE SET STYLE *
+TYPE=REPORT,
+GRID=OFF,
+SIZE=10,
+$
+ENDSTYLE
+
+ON TABLE PCHOLD FORMAT XLSX
+ON TABLE NOTOTAL
+END
